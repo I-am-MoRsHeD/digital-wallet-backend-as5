@@ -1,15 +1,10 @@
 import { Types } from "mongoose";
+import { Active } from "../../interface/globalTypes";
 
 export enum Role {
     ADMIN = "ADMIN",
     USER = "USER",
     AGENT = "AGENT"
-};
-
-export enum Active {
-    ACTIVE = "ACTIVE",
-    INACTIVE = 'INACTIVE',
-    BLOCKED = 'BLOCKED'
 };
 
 export interface IUser {
@@ -20,5 +15,5 @@ export interface IUser {
     isDeleted?: boolean;
     isActive?: Active;
     role: Role;
-    wallet?: Types.ObjectId[];
+    wallet?: string;
 };

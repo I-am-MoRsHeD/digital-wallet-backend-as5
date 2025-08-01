@@ -1,5 +1,6 @@
 import z from "zod";
-import { Active, Role } from "./user.interface";
+import {  Role } from "./user.interface";
+import { Active } from "../../interface/globalTypes";
 
 
 

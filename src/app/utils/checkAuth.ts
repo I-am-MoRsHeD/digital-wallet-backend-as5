@@ -4,7 +4,7 @@ import { verifyToken } from "../utils/jwt";
 import { envVars } from "../config/env";
 import { JwtPayload } from "jsonwebtoken";
 import { User } from "../modules/user/user.model";
-import { Active } from "../modules/user/user.interface";
+import { Active } from "../interface/globalTypes";
 
 export const checkAuth = (...roles: string[]) => async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -20,7 +20,7 @@ export const checkAuth = (...roles: string[]) => async (req: Request, res: Respo
         if (!isUserExist) {
             throw new AppError(400, 'User does not exist');
         };
-        if (isUserExist.isActive === Active.BLOCKED || isUserExist.isActive === Active.INACTIVE) {
+        if (isUserExist.isActive === Active.BLOCKED) {
             throw new AppError(400, `User is ${isUserExist.isActive}`);
         };
         if (isUserExist.isDeleted) {

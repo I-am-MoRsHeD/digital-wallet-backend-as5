@@ -8,7 +8,9 @@ import { createUserZodSchema, updateUserZodSchema } from './user.validation';
 const router = Router();
 
 router.post('/register', validateSchema(createUserZodSchema), UserControllers.createUser);
-router.get('/', checkAuth(Role.ADMIN), UserControllers.getAllUser);
+router.get('/',
+    // checkAuth(Role.ADMIN),
+    UserControllers.getAllUser);
 router.get('/:id', UserControllers.singleUser);
 router.patch('/:id',
     checkAuth(...Object.values(Role)),
