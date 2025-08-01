@@ -1,0 +1,44 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { NextFunction, Request, Response } from "express";
+import { catchAsync } from "../../utils/catchAsync";
+import { UserServices } from "./user.service";
+import { sendResponse } from "../../utils/sendResponse";
+import { IUser } from "./user.interface";
+
+
+const createUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const user = await UserServices.createUser(req.body);
+    sendResponse<IUser>(res, {
+        statusCode: 201,
+        success: true,
+        message: "User created successfully",
+        data: user
+    });
+});
+
+const getAllUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const users = await UserServices.getAllUser();
+    sendResponse<IUser[]>(res, {
+        statusCode: 200,
+        success: true,
+        message: "Users retrieved successfully",
+        data: users
+    });
+});
+
+const singleUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const user = await UserServices.singleUser(id);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "User retrieved successfully",
+        data: user
+    });
+})
+
+export const UserControllers = {
+    createUser,
+    getAllUser,
+    singleUser
+}
