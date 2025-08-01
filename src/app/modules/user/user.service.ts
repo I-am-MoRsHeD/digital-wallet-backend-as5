@@ -1,6 +1,7 @@
+import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
-import { IUser } from "./user.interface";
+import { IUser, Role } from "./user.interface";
 import { User } from "./user.model";
 import bcrypt from 'bcryptjs';
 
@@ -33,9 +34,39 @@ const singleUser = async (id: string) => {
     return user;
 };
 
+const updateUser = async (userId: string, payload: Partial<IUser>, decodedUser: JwtPayload) => {
+    const isUserExist = await User.findById(userId);
+
+    if (!isUserExist) {
+        throw new AppError(404, 'User not found');
+    };
+
+    if (payload.email) {
+        throw new AppError(400, 'You cannot update your email!');
+    };
+    if (payload.role) {
+        if (decodedUser.role === Role.USER || decodedUser.role === Role.AGENT) {
+            throw new AppError(403, 'You are not permitted to do this!');
+        };
+    };
+
+    if (payload.isActive || payload.isDeleted) {
+        if (decodedUser.role === Role.USER || decodedUser.role === Role.AGENT) {
+            throw new AppError(403, 'You are not permitted to do this!');
+        };
+    }
+
+    if (payload.password) {
+        payload.password = await bcrypt.hash(payload.password as string, envVars.BCRYPT_SALT_ROUNDS);
+    };
+
+    const newUpdatedUser = await User.findByIdAndUpdate(userId, payload, { new: true, runValidators: true });
+    return newUpdatedUser;
+}
 
 export const UserServices = {
     createUser,
     getAllUser,
-    singleUser
+    singleUser,
+    updateUser
 };
