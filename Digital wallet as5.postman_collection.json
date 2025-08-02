@@ -1,0 +1,639 @@
+{
+	"info": {
+		"_postman_id": "3f15f704-324b-487d-9690-fd9c8e232430",
+		"name": "Digital wallet as5",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32496948"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Akkas\",\r\n    \"email\": \"akkas3@gmail.com\",\r\n    \"password\": \"123456A@a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzFkM2VkODM3ZGI5MTAzYjlhMDIiLCJlbWFpbCI6ImRvbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTQwNzA5NDksImV4cCI6MTc1NDE1NzM0OX0.S1A8sJa5dk3BXXuDSpKp2Q0t_R7ePqd5W0geEDSel4A",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Chattogram\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Chattogram\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/user/688bd043fb68a103e4eaad8a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"688bd043fb68a103e4eaad8a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upate  user info",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzFkM2VkODM3ZGI5MTAzYjlhMDIiLCJlbWFpbCI6ImRvbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTQwNTUyNzUsImV4cCI6MTc1NDE0MTY3NX0.k15g73G2E4EbmtQRD2vkIvaE_WCcbXh-V8q_H5tYJNU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"role\" : \"AGENT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/user/688cc25ced837db9103b9a0a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"688cc25ced837db9103b9a0a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"don@gmail.com\",\r\n    \"password\" : \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"mithul4@gmail.com\",\r\n    \"password\" : \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wallet",
+			"item": [
+				{
+					"name": "Get User wallet",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzIxNGVkODM3ZGI5MTAzYjlhMDUiLCJlbWFpbCI6Im1vcnNoZWRAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTQwNTY0MTQsImV4cCI6MTc1NDE0MjgxNH0._2IZ7Wt2v825bDu3TDnDzJAv19lW48Ao_ZbLLsGImUs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"balance\" : 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/wallets/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all wallets",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzIxNGVkODM3ZGI5MTAzYjlhMDUiLCJlbWFpbCI6Im1vcnNoZWRAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTQwNTY0MTQsImV4cCI6MTc1NDE0MjgxNH0._2IZ7Wt2v825bDu3TDnDzJAv19lW48Ao_ZbLLsGImUs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"balance\" : 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/wallets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"wallets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TopUp wallet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzIxNGVkODM3ZGI5MTAzYjlhMDUiLCJlbWFpbCI6Im1vcnNoZWRAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTQwNTY0MTQsImV4cCI6MTc1NDE0MjgxNH0._2IZ7Wt2v825bDu3TDnDzJAv19lW48Ao_ZbLLsGImUs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"balance\" : 50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/wallets/user/top-up",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"user",
+								"top-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Withdraw wallet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzIxNGVkODM3ZGI5MTAzYjlhMDUiLCJlbWFpbCI6Im1vcnNoZWRAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTQwNTY0MTQsImV4cCI6MTc1NDE0MjgxNH0._2IZ7Wt2v825bDu3TDnDzJAv19lW48Ao_ZbLLsGImUs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"balance\" : 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/wallets/user/withdraw",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"user",
+								"withdraw"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Money to User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzIxNGVkODM3ZGI5MTAzYjlhMDUiLCJlbWFpbCI6Im1vcnNoZWRAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTQwNTY0MTQsImV4cCI6MTc1NDE0MjgxNH0._2IZ7Wt2v825bDu3TDnDzJAv19lW48Ao_ZbLLsGImUs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": \"688cdd60f270b338225ae8eb\",\r\n    \"balance\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/wallets/user/send-money",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"user",
+								"send-money"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Agent Wallet",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzI1Y2VkODM3ZGI5MTAzYjlhMGEiLCJlbWFpbCI6ImFra2FzQGdtYWlsLmNvbSIsInJvbGUiOiJBR0VOVCIsImlhdCI6MTc1NDA2MzU0NywiZXhwIjoxNzU0MTQ5OTQ3fQ.DbsSGdBvyD08rKZSoq5Z7ZZ0mDIxPojeqH7v0sLoHcA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"balance\" : 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/wallets/agent",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"agent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cash in to User wallet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzI1Y2VkODM3ZGI5MTAzYjlhMGEiLCJlbWFpbCI6ImFra2FzQGdtYWlsLmNvbSIsInJvbGUiOiJBR0VOVCIsImlhdCI6MTc1NDA2MzU0NywiZXhwIjoxNzU0MTQ5OTQ3fQ.DbsSGdBvyD08rKZSoq5Z7ZZ0mDIxPojeqH7v0sLoHcA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": \"688d0bc165568547d18ec65e\",\r\n    \"balance\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/wallets/agent/cash-in",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"agent",
+								"cash-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cash out from User wallet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzI1Y2VkODM3ZGI5MTAzYjlhMGEiLCJlbWFpbCI6ImFra2FzQGdtYWlsLmNvbSIsInJvbGUiOiJBR0VOVCIsImlhdCI6MTc1NDA2MzU0NywiZXhwIjoxNzU0MTQ5OTQ3fQ.DbsSGdBvyD08rKZSoq5Z7ZZ0mDIxPojeqH7v0sLoHcA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\" : \"688cc214ed837db9103b9a05\",\r\n    \"balance\" : 30\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/wallets/agent/cash-out",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"agent",
+								"cash-out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Block User wallet",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzFkM2VkODM3ZGI5MTAzYjlhMDIiLCJlbWFpbCI6ImRvbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTQwNzA5NDksImV4cCI6MTc1NDE1NzM0OX0.S1A8sJa5dk3BXXuDSpKp2Q0t_R7ePqd5W0geEDSel4A",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\" : \"ACTIVE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/wallets/block-unblock/688cc214ed837db9103b9a06",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"wallets",
+								"block-unblock",
+								"688cc214ed837db9103b9a06"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Get all Transactions",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzFkM2VkODM3ZGI5MTAzYjlhMDIiLCJlbWFpbCI6ImRvbkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTQwNzI5MjQsImV4cCI6MTc1NDE1OTMyNH0.iq7-yLLAVcBKHjdwVhGvD76M67OfWZrNsOcaMHxleEc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"balance\" : 100\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/transactions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user transactions",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODhjYzIxNGVkODM3ZGI5MTAzYjlhMDUiLCJlbWFpbCI6Im1vcnNoZWRAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTQwNTY0MTQsImV4cCI6MTc1NDE0MjgxNH0._2IZ7Wt2v825bDu3TDnDzJAv19lW48Ao_ZbLLsGImUs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"balance\" : 100\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/transactions/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"transactions",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
