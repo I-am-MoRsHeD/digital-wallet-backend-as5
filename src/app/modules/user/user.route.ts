@@ -9,7 +9,7 @@ const router = Router();
 
 router.post('/register', validateSchema(createUserZodSchema), UserControllers.createUser);
 router.get('/',
-    // checkAuth(Role.ADMIN),
+    checkAuth(Role.ADMIN),
     UserControllers.getAllUser);
 router.get('/:id', UserControllers.singleUser);
 router.patch('/:id',

@@ -4,6 +4,8 @@ import AppError from "../../errorHelpers/AppError";
 import { IUser, Role } from "./user.interface";
 import { User } from "./user.model";
 import bcrypt from 'bcryptjs';
+import { QueryBuilder } from "../../utils/QueryBuilder";
+import { userSearchableFields } from "./user.constant";
 
 
 const createUser = async (payload: Partial<IUser>) => {
@@ -24,9 +26,24 @@ const createUser = async (payload: Partial<IUser>) => {
     return user;
 };
 
-const getAllUser = async () => {
-    const users = await User.find();
-    return users;
+const getAllUser = async (query: Record<string, string>) => {
+    
+    const queryBuilder = new QueryBuilder(User.find(), query);
+    const users = await queryBuilder
+        .filter()
+        .search(userSearchableFields)
+        .sort()
+        .paginate()
+
+    const [data, meta] = await Promise.all([
+        users.build(),
+        queryBuilder.getMeta()
+    ]);
+
+    return {
+        data,
+        meta
+    };
 };
 
 const singleUser = async (id: string) => {
@@ -54,7 +71,7 @@ const updateUser = async (userId: string, payload: Partial<IUser>, decodedUser: 
         if (decodedUser.role === Role.USER || decodedUser.role === Role.AGENT) {
             throw new AppError(403, 'You are not permitted to do this!');
         };
-    }
+    };
 
     if (payload.password) {
         payload.password = await bcrypt.hash(payload.password as string, envVars.BCRYPT_SALT_ROUNDS);

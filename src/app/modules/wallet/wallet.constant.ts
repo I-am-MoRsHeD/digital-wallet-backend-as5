@@ -5,9 +5,11 @@ import { Wallet } from "./wallet.model";
 import { User } from "../user/user.model";
 import { Role } from "../user/user.interface";
 import { Active } from "../../interface/globalTypes";
+import { TType } from "../transaction/transaction.interface";
+import { Transaction } from "../transaction/transaction.model";
 
 
-export const depositCommonFunc = async (payload: Partial<IWallet>, decodedUser: JwtPayload) => {
+export const depositCommonFunc = async (payload: Partial<IWallet>, decodedUser: JwtPayload, method: TType) => {
     const { balance: sendingAmount, user: recipientUserId } = payload;
 
     if (!sendingAmount || Number(sendingAmount) <= 0) {
@@ -34,7 +36,9 @@ export const depositCommonFunc = async (payload: Partial<IWallet>, decodedUser: 
     if (!senderWallet) {
         throw new AppError(404, 'Sender wallet not found');
     }
-
+    if (senderWallet.status === Active.BLOCKED) {
+        throw new AppError(400, 'Sender wallet is blocked');
+    };
     if (Number(sendingAmount) > senderWallet.balance) {
         throw new AppError(400, 'Insufficient balance');
     }
@@ -42,13 +46,25 @@ export const depositCommonFunc = async (payload: Partial<IWallet>, decodedUser: 
     const recipientWallet = await Wallet.findOne({ user: recipientUserId });
     if (!recipientWallet) {
         throw new AppError(404, 'Recipient wallet not found');
-    }
+    };
+    if (recipientWallet.status === Active.BLOCKED) {
+        throw new AppError(400, 'Recipient wallet is blocked');
+    };
 
     senderWallet.balance -= Number(sendingAmount);
     recipientWallet.balance += Number(sendingAmount);
-
     await senderWallet.save();
     await recipientWallet.save();
+
+    const transactionPayload = {
+        type: method,
+        amount: sendingAmount,
+        totalBalance: senderWallet.balance,
+        sender: decodedUser.userId,
+        receiver: recipientUserId
+    };
+    await Transaction.create(transactionPayload);
+
     return {
         senderWallet,
         recipientWallet

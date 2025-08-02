@@ -7,5 +7,5 @@ export const updateWalletValidation = z.object({
         .max(50, { message: "walletName cannot exceed 50 characters." }).optional(),
     balance: z
         .number({ invalid_type_error: "balance must be number" })
-        .min(50, { message: "balance must be at least 50." }).optional(),
+        .min(1, { message: "balance must be at least 1." }).optional(),
 });

@@ -7,7 +7,8 @@ import { Role } from "../user/user.interface";
 
 const router = Router();
 
-router.get('/all-wallets', checkAuth(Role.ADMIN), WalletControllers.getAllWallets);
+router.get('/', checkAuth(Role.ADMIN), WalletControllers.getAllWallets);
+router.patch('/block-unblock/:id', checkAuth(Role.ADMIN), WalletControllers.blockUserWallet);
 
 router.get('/user', checkAuth(Role.USER), WalletControllers.getUserWallet);
 router.post('/user/top-up', checkAuth(Role.USER), validateSchema(updateWalletValidation), WalletControllers.topUpWallet);

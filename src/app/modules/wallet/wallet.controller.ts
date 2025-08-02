@@ -17,6 +17,18 @@ const getAllWallets = catchAsync(async (req: Request, res: Response, next: NextF
     });
 });
 
+const blockUserWallet = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const wallet = await WalletServices.blockUserWallet(id, req.body);
+
+    sendResponse<IWallet>(res, {
+        statusCode: 200,
+        success: true,
+        message: "User wallet blocked successfully",
+        data: wallet
+    });
+});
+
 // user's wallet actions
 const getUserWallet = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const varifiedToken = req.user;
@@ -107,6 +119,7 @@ const cashOutFromUserWallet = catchAsync(async (req: Request, res: Response, nex
 
 export const WalletControllers = {
     getAllWallets,
+    blockUserWallet,
     getUserWallet,
     topUpWallet,
     withdrawWallet,
