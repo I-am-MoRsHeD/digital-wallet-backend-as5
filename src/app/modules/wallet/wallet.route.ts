@@ -19,7 +19,4 @@ router.get('/agent', checkAuth(Role.AGENT), WalletControllers.getAgentWallet);
 router.post('/agent/cash-in', checkAuth(Role.AGENT), WalletControllers.cashInToUserWallet);
 router.post('/agent/cash-out', checkAuth(Role.AGENT), WalletControllers.cashOutFromUserWallet);
 
-// router.get('/:id');
-// router.patch('/:id');
-
 export const walletRoutes = router;
