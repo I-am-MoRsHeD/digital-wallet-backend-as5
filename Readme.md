@@ -1,6 +1,6 @@
 # 💰 Digital Wallet Backend
 
-This is the backend service for a **Digital Wallet System**, built with **Node.js**, **TypeScript**, **Express**, and **MongoDB**. It provides RESTful APIs for user management, agent/admin functionality, and wallet transactions like top-up, send money, cash-in, and cash-out.
+This is the backend service for a **Digital Wallet System**, built with **Node.js**, **TypeScript**, **Express**, and **MongoDB(Mongoose)**. It provides RESTful APIs for user management, agent/admin functionality, and wallet transactions like top-up, send money, cash-in, and cash-out.
 
 ---
 
@@ -14,7 +14,7 @@ This backend system supports:
 - 📈 **Transaction tracking**
 - 🔒 **JWT-based secure access**
 - 🛠️ **Role-based authorization middleware**
-- 📁 Well-structured modular codebase (MVC pattern)
+- 📁 Well-structured modular codebase (Moduler pattern)
 - 📄 Centralized error handling
 
 ---
