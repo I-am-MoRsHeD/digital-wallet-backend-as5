@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 import { IUser, Role } from "./user.interface";
-import { Active } from "../../interface/globalTypes";
+import { Active, isApproved } from "../../interface/globalTypes";
 import { IWallet } from "../wallet/wallet.interface";
 import { Wallet } from "../wallet/wallet.model";
 
@@ -14,6 +14,11 @@ const userSchema = new Schema<IUser>({
         type: String,
         enum: Object.values(Active),
         default: Active.ACTIVE
+    },
+    isApproved: {
+        type: String,
+        enum: Object.values(isApproved),
+        default: isApproved.PENDING
     },
     role: {
         type: String,

@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { Active } from "../../interface/globalTypes";
+import { Active, isApproved } from "../../interface/globalTypes";
 
 export enum Role {
     ADMIN = "ADMIN",
@@ -14,6 +14,7 @@ export interface IUser {
     password?: string;
     isDeleted?: boolean;
     isActive?: Active;
+    isApproved?: isApproved;
     role: Role;
     wallet?: string;
 };

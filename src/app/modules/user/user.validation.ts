@@ -1,6 +1,6 @@
 import z from "zod";
-import {  Role } from "./user.interface";
-import { Active } from "../../interface/globalTypes";
+import { Role } from "./user.interface";
+import { Active, isApproved } from "../../interface/globalTypes";
 
 
 
@@ -26,6 +26,8 @@ export const createUserZodSchema = z.object({
         .regex(/^(?=.*\d)/, {
             message: "Password must contain at least 1 number.",
         }),
+    role: z
+        .enum(Object.values(Role) as [string])
 });
 
 export const updateUserZodSchema = z.object({
@@ -50,6 +52,9 @@ export const updateUserZodSchema = z.object({
         .optional(),
     isActive: z
         .enum(Object.values(Active) as [string])
+        .optional(),
+    isApproved: z
+        .enum(Object.values(isApproved) as [string])
         .optional(),
     isDeleted: z
         .boolean({ invalid_type_error: "isDeleted must be true or false" })

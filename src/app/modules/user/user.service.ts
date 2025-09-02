@@ -9,6 +9,7 @@ import { userSearchableFields } from "./user.constant";
 
 
 const createUser = async (payload: Partial<IUser>) => {
+    console.log(payload);
     const { email, password, ...rest } = payload;
 
     const isUserExist = await User.findOne({ email });
@@ -27,7 +28,7 @@ const createUser = async (payload: Partial<IUser>) => {
 };
 
 const getAllUser = async (query: Record<string, string>) => {
-    
+
     const queryBuilder = new QueryBuilder(User.find(), query);
     const users = await queryBuilder
         .filter()
@@ -45,7 +46,12 @@ const getAllUser = async (query: Record<string, string>) => {
         meta
     };
 };
-
+const getMe = async (userId: string) => {
+    const user = await User.findById(userId).select("-password");
+    return {
+        data: user
+    }
+};
 const singleUser = async (id: string) => {
     const user = await User.findById(id);
     return user;
@@ -84,6 +90,7 @@ const updateUser = async (userId: string, payload: Partial<IUser>, decodedUser: 
 export const UserServices = {
     createUser,
     getAllUser,
+    getMe,
     singleUser,
     updateUser
 };

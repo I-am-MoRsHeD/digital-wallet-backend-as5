@@ -12,7 +12,7 @@ const startServer = async () => {
         await mongoose.connect(envVars.MONGO_URL as string);
         console.log('Connected to DB...!!');
         server = app.listen(envVars.PORT, () => {
-            console.log('Server is running on port 3000!!');
+            console.log('Server is running on port 5000!!');
         });
     } catch (error) {
         console.log(error);
