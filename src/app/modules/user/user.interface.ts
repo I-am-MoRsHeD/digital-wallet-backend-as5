@@ -11,7 +11,8 @@ export interface IUser {
     _id?: Types.ObjectId;
     name: string;
     email: string;
-    password?: string;
+    phoneNumber: string;
+    password: string;
     isDeleted?: boolean;
     isActive?: Active;
     isApproved?: isApproved;

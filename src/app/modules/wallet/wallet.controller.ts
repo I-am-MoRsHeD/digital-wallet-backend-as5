@@ -57,8 +57,7 @@ const topUpWallet = catchAsync(async (req: Request, res: Response, next: NextFun
 
 const withdrawWallet = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const varifiedToken = req.user;
-    const { balance } = req.body;
-    const wallet = await WalletServices.withdrawWallet(balance, varifiedToken as JwtPayload);
+    const wallet = await WalletServices.withdrawWallet(req.body, varifiedToken as JwtPayload);
 
     sendResponse<IWallet>(res, {
         statusCode: 200,

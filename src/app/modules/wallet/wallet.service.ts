@@ -62,13 +62,44 @@ const topUpWallet = async (balance: number, decodedUser: JwtPayload) => {
     const transactionPayload = {
         type: TType.TOPUP,
         amount: balance,
-        totalBalance : wallet.balance,
+        totalBalance: wallet.balance,
         receiver: decodedUser.userId
     };
     await Transaction.create(transactionPayload);
     return wallet;
 };
-const withdrawWallet = async (balance: number, decodedUser: JwtPayload) => {
+// const withdrawWallet = async (payload, decodedUser: JwtPayload) => {
+//     const { balance } = payload;
+//     const wallet = await Wallet.findOne({ user: decodedUser.userId });
+//     if (!wallet) {
+//         throw new AppError(404, 'Wallet not found');
+//     };
+//     if (wallet.status === Active.BLOCKED) {
+//         throw new AppError(400, 'Wallet is blocked');
+//     };
+//     if (balance < 0) {
+//         throw new AppError(400, 'Balance cannot be negative');
+//     } else if (balance > wallet.balance) {
+//         throw new AppError(400, 'Insufficient balance');
+//     }
+
+//     const newBalance = wallet.balance - Number(balance);
+//     wallet.balance = newBalance;
+//     await wallet.save();
+
+//     const transactionPayload = {
+//         type: TType.WITHDRAWAL,
+//         amount: balance,
+//         totalBalance: wallet.balance,
+//         sender: decodedUser.userId
+//     };
+//     await Transaction.create(transactionPayload);
+
+//     return wallet;
+// };
+const withdrawWallet = async (payload, decodedUser: JwtPayload) => {
+    const { balance } = payload;
+    
     const wallet = await Wallet.findOne({ user: decodedUser.userId });
     if (!wallet) {
         throw new AppError(404, 'Wallet not found');
@@ -89,7 +120,7 @@ const withdrawWallet = async (balance: number, decodedUser: JwtPayload) => {
     const transactionPayload = {
         type: TType.WITHDRAWAL,
         amount: balance,
-        totalBalance : wallet.balance,
+        totalBalance: wallet.balance,
         sender: decodedUser.userId
     };
     await Transaction.create(transactionPayload);
@@ -166,7 +197,7 @@ const cashOutFromUserWallet = async (payload: Partial<IWallet>, decodedUser: Jwt
     const transactionPayload = {
         type: TType.CASH_OUT,
         amount: sendingAmount,
-        totalBalance : agentWallet.balance,
+        totalBalance: agentWallet.balance,
         sender: recipientUserId,
         receiver: decodedUser.userId
     };

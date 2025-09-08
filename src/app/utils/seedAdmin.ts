@@ -19,6 +19,7 @@ export const seedAdmin = async () => {
         const payload: IUser = {
             name: "Don banega Admin!",
             email: envVars.DEFAULT_ADMIN_EMAIL,
+            phoneNumber : "01987654321",
             password: bcryptedPassword,
             role: Role.ADMIN,
         }

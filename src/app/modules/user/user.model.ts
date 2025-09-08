@@ -8,7 +8,8 @@ import { Wallet } from "../wallet/wallet.model";
 const userSchema = new Schema<IUser>({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String },
+    password: { type: String, required: true },
+    phoneNumber: { type: String, required: true, unique: true },
     isDeleted: { type: Boolean, default: false },
     isActive: {
         type: String,
@@ -39,6 +40,7 @@ userSchema.pre('save', async function (next) {
         const payload: IWallet = {
             walletName: 'Main Wallet',
             balance: 50,
+            phoneNumber: this.phoneNumber,
             user: this._id,
             status: Active.ACTIVE
         };
@@ -48,6 +50,21 @@ userSchema.pre('save', async function (next) {
     };
 
     next();
+});
+
+userSchema.post('findOneAndUpdate', async function (doc) {
+    if (!doc) return "No updated document found";
+
+    const walletId = doc.wallet;
+    if (!walletId) return "No user wallet found"
+
+    if (doc.phoneNumber) {
+        const payload: Partial<IWallet> = {
+            phoneNumber: doc.phoneNumber
+        };
+
+        await Wallet.findByIdAndUpdate(walletId, payload, { new: true, runValidators: true });
+    }
 })
 
 export const User = model<IUser>('User', userSchema);
