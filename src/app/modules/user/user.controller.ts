@@ -36,8 +36,8 @@ const getMe = catchAsync(async (req: Request, res: Response, next: NextFunction)
     sendResponse(res, {
         success: true,
         statusCode: 200,
-        message: "Your profile Retrieved Successfully",
-        data: result.data
+        message: "Your profile retrieved successfully",
+        data: result
     })
 })
 

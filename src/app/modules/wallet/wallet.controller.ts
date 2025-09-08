@@ -29,6 +29,18 @@ const blockUserWallet = catchAsync(async (req: Request, res: Response, next: Nex
     });
 });
 
+const getMe = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const decodedToken = req.user as JwtPayload
+    const result = await WalletServices.getMe(decodedToken.userId);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Your wallet retrieved successfully",
+        data: result
+    })
+})
+
 // user's wallet actions
 const getUserWallet = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const varifiedToken = req.user;
@@ -66,6 +78,17 @@ const withdrawWallet = catchAsync(async (req: Request, res: Response, next: Next
         data: result
     });
 });
+const sendMoneyToWallet = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const varifiedToken = req.user;
+    const wallet = await WalletServices.sendMoneyToWallet(req.body, varifiedToken as JwtPayload);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Send Money to user's account completed successfully",
+        data: wallet
+    });
+});
 
 // agent's wallet actions
 const getAgentWallet = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -80,17 +103,6 @@ const getAgentWallet = catchAsync(async (req: Request, res: Response, next: Next
     });
 });
 
-const sendMoneyToWallet = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const varifiedToken = req.user;
-    const wallet = await WalletServices.sendMoneyToWallet(req.body, varifiedToken as JwtPayload);
-
-    sendResponse(res, {
-        statusCode: 200,
-        success: true,
-        message: "Send Money to user's account completed successfully",
-        data: wallet
-    });
-});
 
 const cashInToUserWallet = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const varifiedToken = req.user;

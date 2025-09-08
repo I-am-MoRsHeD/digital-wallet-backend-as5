@@ -34,6 +34,10 @@ const blockUserWallet = async (id: string, payload: Partial<IWallet>) => {
 
     return wallet;
 };
+const getMe = async (userId: string) => {
+    const wallet = await Wallet.findOne({ user: userId });
+    return wallet;
+};
 const getUserWallet = async (decodedUser: JwtPayload) => {
     const wallet = await Wallet.findOne({ user: decodedUser.userId });
     if (!wallet) {
@@ -68,35 +72,8 @@ const topUpWallet = async (balance: number, decodedUser: JwtPayload) => {
     await Transaction.create(transactionPayload);
     return wallet;
 };
-// const withdrawWallet = async (payload, decodedUser: JwtPayload) => {
-//     const { balance } = payload;
-//     const wallet = await Wallet.findOne({ user: decodedUser.userId });
-//     if (!wallet) {
-//         throw new AppError(404, 'Wallet not found');
-//     };
-//     if (wallet.status === Active.BLOCKED) {
-//         throw new AppError(400, 'Wallet is blocked');
-//     };
-//     if (balance < 0) {
-//         throw new AppError(400, 'Balance cannot be negative');
-//     } else if (balance > wallet.balance) {
-//         throw new AppError(400, 'Insufficient balance');
-//     }
 
-//     const newBalance = wallet.balance - Number(balance);
-//     wallet.balance = newBalance;
-//     await wallet.save();
 
-//     const transactionPayload = {
-//         type: TType.WITHDRAWAL,
-//         amount: balance,
-//         totalBalance: wallet.balance,
-//         sender: decodedUser.userId
-//     };
-//     await Transaction.create(transactionPayload);
-
-//     return wallet;
-// };
 const withdrawWallet = async (payload: Partial<IWallet>, decodedUser: JwtPayload) => {
     const { balance: amount, phoneNumber: agentPhoneNumber } = payload;
 
@@ -114,6 +91,15 @@ const withdrawWallet = async (payload: Partial<IWallet>, decodedUser: JwtPayload
     };
 
     const agentWallet = await Wallet.findOne({ phoneNumber: agentPhoneNumber });
+    const user = await User.findById(agentWallet?.user);
+
+    if (agentWallet && agentWallet.user.toString() === decodedUser.userId) {
+        throw new AppError(400, "You cannot withdraw to your own wallet");
+    };
+
+    if (user && user.role !== Role.AGENT) {
+        throw new AppError(400, "Withdrawals can only be made to agent accounts");
+    };
 
     if (!agentWallet) {
         throw new AppError(404, "Agent's Wallet not found");
@@ -228,6 +214,7 @@ const cashOutFromUserWallet = async (payload: Partial<IWallet>, decodedUser: Jwt
 export const WalletServices = {
     getAllWallets,
     blockUserWallet,
+    getMe,
     getUserWallet,
     topUpWallet,
     withdrawWallet,

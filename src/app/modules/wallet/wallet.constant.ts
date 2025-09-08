@@ -10,19 +10,24 @@ import { Transaction } from "../transaction/transaction.model";
 
 
 export const depositCommonFunc = async (payload: Partial<IWallet>, decodedUser: JwtPayload, method: TType) => {
-    const { balance: sendingAmount, user: recipientUserId } = payload;
+    const { balance: sendingAmount, phoneNumber: recipientPhoneNumber } = payload;
 
     if (!sendingAmount || Number(sendingAmount) <= 0) {
         throw new AppError(400, 'Amount must be greater than zero');
     }
 
-    const [senderWallet, recipientUser] = await Promise.all([
+    const [senderWallet, recipientUser, recipientWallet] = await Promise.all([
         Wallet.findOne({ user: decodedUser.userId }),
-        User.findById(recipientUserId),
+        User.findOne({ phoneNumber: recipientPhoneNumber }),
+        Wallet.findOne({ phoneNumber: recipientPhoneNumber }),
     ]);
 
     if (!recipientUser) {
         throw new AppError(404, 'Recipient user not found');
+    };
+
+    if (recipientUser._id.toString() === decodedUser.userId) {
+        throw new AppError(400, 'You cannot send money to yourself');
     }
 
     if (recipientUser.role !== Role.USER) {
@@ -43,7 +48,6 @@ export const depositCommonFunc = async (payload: Partial<IWallet>, decodedUser: 
         throw new AppError(400, 'Insufficient balance');
     }
 
-    const recipientWallet = await Wallet.findOne({ user: recipientUserId });
     if (!recipientWallet) {
         throw new AppError(404, 'Recipient wallet not found');
     };
@@ -59,9 +63,8 @@ export const depositCommonFunc = async (payload: Partial<IWallet>, decodedUser: 
     const transactionPayload = {
         type: method,
         amount: sendingAmount,
-        totalBalance: senderWallet.balance,
         sender: decodedUser.userId,
-        receiver: recipientUserId
+        receiver: recipientUser._id,
     };
     await Transaction.create(transactionPayload);
 

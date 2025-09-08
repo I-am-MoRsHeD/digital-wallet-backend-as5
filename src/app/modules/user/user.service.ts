@@ -57,9 +57,7 @@ const getAllUser = async (query: Record<string, string>) => {
 };
 const getMe = async (userId: string) => {
     const user = await User.findById(userId).select("-password");
-    return {
-        data: user
-    }
+    return user
 };
 const singleUser = async (id: string) => {
     const user = await User.findById(id);
