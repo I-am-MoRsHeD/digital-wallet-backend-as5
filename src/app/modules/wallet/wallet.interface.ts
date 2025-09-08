@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 import { Active } from "../../interface/globalTypes";
 
 export interface IWallet {
-    _id?: string;
+    _id?: Types.ObjectId;
     walletName: string;
     phoneNumber?: string;
     balance: number;

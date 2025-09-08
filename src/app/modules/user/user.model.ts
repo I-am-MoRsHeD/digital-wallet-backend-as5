@@ -36,6 +36,7 @@ const userSchema = new Schema<IUser>({
 });
 
 userSchema.pre('save', async function (next) {
+
     if (this.isNew && this.role !== Role.ADMIN) {
         const payload: IWallet = {
             walletName: 'Main Wallet',

@@ -97,35 +97,52 @@ const topUpWallet = async (balance: number, decodedUser: JwtPayload) => {
 
 //     return wallet;
 // };
-const withdrawWallet = async (payload, decodedUser: JwtPayload) => {
-    const { balance } = payload;
-    
-    const wallet = await Wallet.findOne({ user: decodedUser.userId });
-    if (!wallet) {
+const withdrawWallet = async (payload: Partial<IWallet>, decodedUser: JwtPayload) => {
+    const { balance: amount, phoneNumber: agentPhoneNumber } = payload;
+
+    const userWallet = await Wallet.findOne({ user: decodedUser.userId });
+    if (!userWallet) {
         throw new AppError(404, 'Wallet not found');
     };
-    if (wallet.status === Active.BLOCKED) {
+    if (userWallet.status === Active.BLOCKED) {
         throw new AppError(400, 'Wallet is blocked');
     };
-    if (balance < 0) {
+    if (Number(amount) < 0) {
         throw new AppError(400, 'Balance cannot be negative');
-    } else if (balance > wallet.balance) {
+    } else if (Number(amount) > userWallet.balance) {
         throw new AppError(400, 'Insufficient balance');
-    }
+    };
 
-    const newBalance = wallet.balance - Number(balance);
-    wallet.balance = newBalance;
-    await wallet.save();
+    const agentWallet = await Wallet.findOne({ phoneNumber: agentPhoneNumber });
+
+    if (!agentWallet) {
+        throw new AppError(404, "Agent's Wallet not found");
+    };
+    if (agentWallet.status === Active.BLOCKED) {
+        throw new AppError(400, "Agent's Wallet is blocked");
+    };
+
+    const newBalance = userWallet.balance - Number(amount);
+    userWallet.balance = newBalance;
+
+    const newAgentWalletBalance = agentWallet.balance + Number(amount);
+    agentWallet.balance = newAgentWalletBalance
+
+    await userWallet.save();
+    await agentWallet.save();
 
     const transactionPayload = {
         type: TType.WITHDRAWAL,
-        amount: balance,
-        totalBalance: wallet.balance,
-        sender: decodedUser.userId
+        amount: amount,
+        sender: userWallet._id,
+        receiver: agentWallet._id
     };
     await Transaction.create(transactionPayload);
 
-    return wallet;
+    return {
+        userWallet,
+        agentWallet
+    };
 };
 const sendMoneyToWallet = async (payload: Partial<IWallet>, decodedUser: JwtPayload) => {
     const wallet = await depositCommonFunc(payload, decodedUser, TType.SEND_MONEY);

@@ -13,7 +13,6 @@ const transactionRoutes = new Schema<ITransaction>({
     },
     type: { type: String, required: true },
     amount: { type: Number, required: true },
-    totalBalance: { type: Number, required: true },
     status: { type: String, default: 'COMPLETED' },
 }, {
     versionKey: false,

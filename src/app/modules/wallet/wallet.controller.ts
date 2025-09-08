@@ -57,13 +57,13 @@ const topUpWallet = catchAsync(async (req: Request, res: Response, next: NextFun
 
 const withdrawWallet = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const varifiedToken = req.user;
-    const wallet = await WalletServices.withdrawWallet(req.body, varifiedToken as JwtPayload);
+    const result = await WalletServices.withdrawWallet(req.body, varifiedToken as JwtPayload);
 
-    sendResponse<IWallet>(res, {
+    sendResponse<{ userWallet: IWallet; agentWallet: IWallet }>(res, {
         statusCode: 200,
         success: true,
         message: "Withdraw completed successfully",
-        data: wallet
+        data: result
     });
 });
 

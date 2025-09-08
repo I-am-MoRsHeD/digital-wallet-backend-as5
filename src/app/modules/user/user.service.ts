@@ -6,10 +6,11 @@ import { User } from "./user.model";
 import bcrypt from 'bcryptjs';
 import { QueryBuilder } from "../../utils/QueryBuilder";
 import { userSearchableFields } from "./user.constant";
+import { isApproved } from "../../interface/globalTypes";
 
 
 const createUser = async (payload: Partial<IUser>) => {
-    const { email, password, ...rest } = payload;
+    const { email, password, role, isApproved, ...rest } = payload;
 
     const isUserExist = await User.findOne({ email });
     if (isUserExist) {
@@ -18,11 +19,20 @@ const createUser = async (payload: Partial<IUser>) => {
 
     const bcryptedPassword = await bcrypt.hash(password as string, Number(envVars.BCRYPT_SALT_ROUNDS));
 
-    const user = await User.create({
+    const userPayload = {
         email,
         password: bcryptedPassword,
+        role,
+        isApproved,
         ...rest,
-    });
+    }
+
+    if (role === Role.USER) {
+        userPayload.isApproved = 'APPROVED' as isApproved
+    };
+
+
+    const user = await User.create(userPayload);
     return user;
 };
 

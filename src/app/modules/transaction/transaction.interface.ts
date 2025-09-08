@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { IUser } from "../user/user.interface";
 
 export enum TType {
@@ -9,11 +10,10 @@ export enum TType {
 }
 
 export interface ITransaction {
-    _id?: string,
+    _id?: Types.ObjectId,
     amount: number,
-    totalBalance: number,
     type: TType,
     status: 'COMPLETED',
-    sender?: Partial<IUser>,
-    receiver?: Partial<IUser>,
+    sender?: Types.ObjectId | IUser,
+    receiver?: Types.ObjectId | IUser,
 };

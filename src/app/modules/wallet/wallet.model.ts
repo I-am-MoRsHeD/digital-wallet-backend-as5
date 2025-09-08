@@ -6,6 +6,7 @@ import { Active } from "../../interface/globalTypes";
 const walletSchema = new Schema<IWallet>({
     walletName: { type: String, required: true },
     balance: { type: Number, required: true },
+    phoneNumber: { type: String, required: true },
     status: { type: String, enum: Object.values(Active), default: Active.ACTIVE },
     user: {
         type: Schema.Types.ObjectId,

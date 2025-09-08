@@ -1,7 +1,5 @@
 import { Router } from "express";
 import { WalletControllers } from "./wallet.controller";
-import { validateSchema } from "../../middlewares/validateSchema";
-import { updateWalletValidation } from "./wallet.validation";
 import { checkAuth } from "../../utils/checkAuth";
 import { Role } from "../user/user.interface";
 
@@ -11,8 +9,8 @@ router.get('/', checkAuth(Role.ADMIN), WalletControllers.getAllWallets);
 router.patch('/block-unblock/:id', checkAuth(Role.ADMIN), WalletControllers.blockUserWallet);
 
 router.get('/user', checkAuth(Role.USER), WalletControllers.getUserWallet);
-router.post('/user/top-up', checkAuth(Role.USER), validateSchema(updateWalletValidation), WalletControllers.topUpWallet);
-router.post('/user/withdraw', checkAuth(Role.USER), validateSchema(updateWalletValidation), WalletControllers.withdrawWallet);
+router.post('/user/top-up', checkAuth(Role.USER), WalletControllers.topUpWallet);
+router.post('/user/withdraw', checkAuth(Role.USER), WalletControllers.withdrawWallet);
 router.post('/user/send-money', checkAuth(Role.USER), WalletControllers.sendMoneyToWallet);
 
 router.get('/agent', checkAuth(Role.AGENT), WalletControllers.getAgentWallet);
