@@ -131,6 +131,7 @@ const cashOutFromUserWallet = catchAsync(async (req: Request, res: Response, nex
 export const WalletControllers = {
     getAllWallets,
     blockUserWallet,
+    getMe,
     getUserWallet,
     topUpWallet,
     withdrawWallet,

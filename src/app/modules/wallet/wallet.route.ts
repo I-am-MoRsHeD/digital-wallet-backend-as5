@@ -7,14 +7,13 @@ const router = Router();
 
 router.get('/', checkAuth(Role.ADMIN), WalletControllers.getAllWallets);
 router.patch('/block-unblock/:id', checkAuth(Role.ADMIN), WalletControllers.blockUserWallet);
+router.get("/me", checkAuth(Role.USER, Role.AGENT), WalletControllers.getMe); // \/
 
-router.get('/user', checkAuth(Role.USER), WalletControllers.getUserWallet);
 router.post('/user/top-up', checkAuth(Role.USER), WalletControllers.topUpWallet);
-router.post('/user/withdraw', checkAuth(Role.USER), WalletControllers.withdrawWallet);
-router.post('/user/send-money', checkAuth(Role.USER), WalletControllers.sendMoneyToWallet);
+router.post('/user/withdraw', checkAuth(Role.USER), WalletControllers.withdrawWallet); // \/
+router.post('/user/send-money', checkAuth(Role.USER), WalletControllers.sendMoneyToWallet); // \/
 
-router.get('/agent', checkAuth(Role.AGENT), WalletControllers.getAgentWallet);
-router.post('/agent/cash-in', checkAuth(Role.AGENT), WalletControllers.cashInToUserWallet);
+router.post('/agent/cash-in', checkAuth(Role.AGENT), WalletControllers.cashInToUserWallet); // \/
 router.post('/agent/cash-out', checkAuth(Role.AGENT), WalletControllers.cashOutFromUserWallet);
 
 export const walletRoutes = router;

@@ -35,7 +35,7 @@ const blockUserWallet = async (id: string, payload: Partial<IWallet>) => {
     return wallet;
 };
 const getMe = async (userId: string) => {
-    const wallet = await Wallet.findOne({ user: userId });
+    const wallet = await Wallet.findOne({ user: userId }).populate('user', '-password');
     return wallet;
 };
 const getUserWallet = async (decodedUser: JwtPayload) => {
