@@ -4,7 +4,7 @@ import AppError from "../../errorHelpers/AppError";
 import { Wallet } from "./wallet.model";
 import { User } from "../user/user.model";
 import { Role } from "../user/user.interface";
-import { Active } from "../../interface/globalTypes";
+import { Active, isApproved } from "../../interface/globalTypes";
 import { TType } from "../transaction/transaction.interface";
 import { Transaction } from "../transaction/transaction.model";
 
@@ -14,7 +14,9 @@ export const depositCommonFunc = async (payload: Partial<IWallet>, decodedUser: 
 
     if (!sendingAmount || Number(sendingAmount) <= 0) {
         throw new AppError(400, 'Amount must be greater than zero');
-    }
+    };
+
+    const user = await User.findById(decodedUser.userId);
 
     const [senderWallet, recipientUser, recipientWallet] = await Promise.all([
         Wallet.findOne({ user: decodedUser.userId }),
@@ -22,8 +24,26 @@ export const depositCommonFunc = async (payload: Partial<IWallet>, decodedUser: 
         Wallet.findOne({ phoneNumber: recipientPhoneNumber }),
     ]);
 
+
+    if (!user) {
+        throw new AppError(404, 'User not found');
+    };
+    if (user.role === Role.USER) {
+        if (user?.isActive === Active.BLOCKED) {
+            throw new AppError(400, 'User is blocked');
+        };
+    };
+    if (user.role === Role.AGENT) {
+        if (user?.isApproved === isApproved.SUSPENDED) {
+            throw new AppError(400, 'Agent is suspended');
+        };
+    };
+
     if (!recipientUser) {
         throw new AppError(404, 'Recipient user not found');
+    };
+    if (recipientUser.isActive === Active.BLOCKED) {
+        throw new AppError(400, 'Recipient user is blocked');
     };
 
     if (recipientUser._id.toString() === decodedUser.userId) {
@@ -32,10 +52,6 @@ export const depositCommonFunc = async (payload: Partial<IWallet>, decodedUser: 
 
     if (recipientUser.role !== Role.USER) {
         throw new AppError(400, 'Money can only be sent to regular user accounts');
-    }
-
-    if (recipientUser.isActive === Active.BLOCKED) {
-        throw new AppError(400, 'Recipient user is blocked');
     }
 
     if (!senderWallet) {

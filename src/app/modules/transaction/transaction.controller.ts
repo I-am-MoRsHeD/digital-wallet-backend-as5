@@ -34,7 +34,37 @@ const getTransactionsForDecodedUser = catchAsync(async (req: Request, res: Respo
     });
 });
 
+const getCashInTransactions = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const query = req.query;
+    const varifiedUser = req.user;
+    const result = await TransactionServices.getCashInTransactions(query as Record<string, string>, varifiedUser as JwtPayload);
+
+    sendResponse<ITransaction[]>(res, {
+        statusCode: 200,
+        success: true,
+        message: "Cash In transactions retrieved successfully",
+        data: result.data,
+        meta: result.meta
+    });
+});
+
+const getWithdrawTransactions = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const query = req.query;
+    const varifiedUser = req.user;
+    const result = await TransactionServices.getWithdrawTransactions(query as Record<string, string>, varifiedUser as JwtPayload);
+
+    sendResponse<ITransaction[]>(res, {
+        statusCode: 200,
+        success: true,
+        message: "Cash out transactions retrieved successfully",
+        data: result.data,
+        meta: result.meta
+    });
+});
+
 export const TransactionController = {
     getAllTransactions,
-    getTransactionsForDecodedUser
+    getTransactionsForDecodedUser,
+    getCashInTransactions,
+    getWithdrawTransactions
 };

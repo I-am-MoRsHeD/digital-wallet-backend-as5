@@ -18,4 +18,11 @@ router.patch('/:id',
     validateSchema(updateUserZodSchema),
     UserControllers.updateUser);
 
+router.patch('/block-unblock/:id',
+    checkAuth(Role.ADMIN),
+    UserControllers.blockUnblockUser);
+router.patch('/approve-suspend/:id',
+    checkAuth(Role.ADMIN),
+    UserControllers.approveOrSuspendAgent);
+
 export const userRoutes = router;

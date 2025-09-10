@@ -67,11 +67,37 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
     });
 });
 
+const blockUnblockUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const result = await UserServices.blockUnblockUser(id);
+
+    sendResponse<IUser>(res, {
+        statusCode: 200,
+        success: true,
+        message: "User managed successfully",
+        data: result
+    });
+});
+
+const approveOrSuspendAgent = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const result = await UserServices.approveOrSuspendAgent(id);
+
+    sendResponse<IUser>(res, {
+        statusCode: 200,
+        success: true,
+        message: "Agent managed successfully",
+        data: result
+    });
+});
+
 
 export const UserControllers = {
     createUser,
     getAllUser,
     getMe,
     singleUser,
-    updateUser
+    updateUser,
+    blockUnblockUser,
+    approveOrSuspendAgent
 }

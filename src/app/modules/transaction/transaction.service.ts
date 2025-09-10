@@ -25,7 +25,6 @@ const getAllTransactions = async (query: Record<string, string>) => {
     };
 };
 
-
 const getTransactionsForDecodedUser = async (query: Record<string, string>, decodedUser: JwtPayload) => {
     const userId = decodedUser.userId;
 
@@ -58,7 +57,66 @@ const getTransactionsForDecodedUser = async (query: Record<string, string>, deco
     };
 };
 
+const getCashInTransactions = async (query: Record<string, string>, decodedUser: JwtPayload) => {
+    const userId = decodedUser.userId;
+
+    const searchQuery = {
+        $and: [
+            { receiver: userId },
+            { type: 'CASH_IN' }
+        ]
+    };
+
+    const baseQuery = Transaction.find(searchQuery)
+        .populate('sender')
+        .populate('receiver');
+        
+    const queryBuilder = new QueryBuilder(baseQuery, query);
+    const transactions = await queryBuilder
+        .paginate();
+
+    const [data, meta] = await Promise.all([
+        transactions.build(),
+        queryBuilder.getMeta()
+    ]);
+
+    return {
+        data,
+        meta
+    };
+};
+
+const getWithdrawTransactions = async (query: Record<string, string>, decodedUser: JwtPayload) => {
+    const userId = decodedUser.userId;
+
+    const searchQuery = {
+        $and: [
+            { receiver: userId },
+            { type: 'WITHDRAW' }
+        ]
+    };
+
+    const baseQuery = Transaction.find(searchQuery)
+        .populate('sender')
+        .populate('receiver');
+    const queryBuilder = new QueryBuilder(baseQuery, query);
+    const transactions = await queryBuilder
+        .paginate();
+
+    const [data, meta] = await Promise.all([
+        transactions.build(),
+        queryBuilder.getMeta()
+    ]);
+
+    return {
+        data,
+        meta
+    };
+};
+
 export const TransactionServices = {
     getAllTransactions,
-    getTransactionsForDecodedUser
+    getTransactionsForDecodedUser,
+    getCashInTransactions,
+    getWithdrawTransactions
 };

@@ -6,7 +6,7 @@ import { User } from "./user.model";
 import bcrypt from 'bcryptjs';
 import { QueryBuilder } from "../../utils/QueryBuilder";
 import { userSearchableFields } from "./user.constant";
-import { isApproved } from "../../interface/globalTypes";
+import { Active, isApproved } from "../../interface/globalTypes";
 
 
 const createUser = async (payload: Partial<IUser>) => {
@@ -92,12 +92,56 @@ const updateUser = async (userId: string, payload: Partial<IUser>, decodedUser: 
 
     const newUpdatedUser = await User.findByIdAndUpdate(userId, payload, { new: true, runValidators: true });
     return newUpdatedUser;
-}
+};
+
+const blockUnblockUser = async (id: string) => {
+    const user = await User.findById(id);
+
+    if (!user) {
+        throw new AppError(404, 'User not found');
+    };
+    if (user.role !== Role.USER) {
+        throw new AppError(400, 'Only regular users can be blocked');
+    };
+
+    if (user.isActive === Active.BLOCKED) {
+        user.isActive = Active.ACTIVE;
+    } else {
+        user.isActive = Active.BLOCKED;
+    }
+
+    await user.save();
+
+    return user;
+};
+
+const approveOrSuspendAgent = async (id: string) => {
+    const agent = await User.findById(id);
+
+    if (!agent) {
+        throw new AppError(404, 'User not found');
+    };
+    if (agent.role !== Role.AGENT) {
+        throw new AppError(400, 'Only regular agents can be suspended');
+    };
+
+    if (agent.isApproved === isApproved.SUSPENDED) {
+        agent.isApproved = isApproved.APPROVED;
+    } else {
+        agent.isApproved = isApproved.SUSPENDED;
+    }
+
+    await agent.save();
+
+    return agent;
+};
 
 export const UserServices = {
     createUser,
     getAllUser,
     getMe,
     singleUser,
-    updateUser
+    updateUser,
+    blockUnblockUser,
+    approveOrSuspendAgent
 };
