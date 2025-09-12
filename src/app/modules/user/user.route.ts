@@ -3,7 +3,7 @@ import { UserControllers } from './user.controller';
 import { checkAuth } from '../../utils/checkAuth';
 import { Role } from './user.interface';
 import { validateSchema } from '../../middlewares/validateSchema';
-import { createUserZodSchema, updateUserZodSchema } from './user.validation';
+import { changePasswordZodSchema, createUserZodSchema, updateUserZodSchema } from './user.validation';
 
 const router = Router();
 
@@ -17,6 +17,10 @@ router.patch('/:id',
     checkAuth(...Object.values(Role)),
     validateSchema(updateUserZodSchema),
     UserControllers.updateUser);
+router.patch('/change-password/:id',
+    checkAuth(...Object.values(Role)),
+    validateSchema(changePasswordZodSchema),
+    UserControllers.changePassword);
 
 router.patch('/block-unblock/:id',
     checkAuth(Role.ADMIN),

@@ -20,3 +20,8 @@ export interface IUser {
     role: Role;
     wallet?: Types.ObjectId | IWallet;
 };
+
+export interface IPassword {
+    currentPassword: string;
+    newPassword: string;
+};

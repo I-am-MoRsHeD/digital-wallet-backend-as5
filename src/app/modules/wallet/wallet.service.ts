@@ -50,10 +50,10 @@ const withdrawWallet = async (payload: Partial<IWallet>, decodedUser: JwtPayload
     if (!user) {
         throw new AppError(404, 'User not found');
     };
-    if(user.isActive === Active.BLOCKED){
+    if (user.isActive === Active.BLOCKED) {
         throw new AppError(400, 'User is blocked');
     };
-    if(agent?.isApproved === isApproved.SUSPENDED){
+    if (agent?.isApproved === isApproved.SUSPENDED) {
         throw new AppError(400, 'Agent is suspended');
     };
 
@@ -96,8 +96,8 @@ const withdrawWallet = async (payload: Partial<IWallet>, decodedUser: JwtPayload
     const transactionPayload = {
         type: TType.WITHDRAWAL,
         amount: amount,
-        sender: userWallet._id,
-        receiver: agentWallet._id
+        sender: decodedUser.userId,
+        receiver: agent?._id
     };
     await Transaction.create(transactionPayload);
 

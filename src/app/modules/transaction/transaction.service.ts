@@ -70,7 +70,7 @@ const getCashInTransactions = async (query: Record<string, string>, decodedUser:
     const baseQuery = Transaction.find(searchQuery)
         .populate('sender')
         .populate('receiver');
-        
+
     const queryBuilder = new QueryBuilder(baseQuery, query);
     const transactions = await queryBuilder
         .paginate();
@@ -92,7 +92,7 @@ const getWithdrawTransactions = async (query: Record<string, string>, decodedUse
     const searchQuery = {
         $and: [
             { receiver: userId },
-            { type: 'WITHDRAW' }
+            { type: 'WITHDRAWAL' }
         ]
     };
 

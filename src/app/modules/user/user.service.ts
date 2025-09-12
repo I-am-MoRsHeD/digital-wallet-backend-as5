@@ -1,7 +1,7 @@
 import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
-import { IUser, Role } from "./user.interface";
+import { IPassword, IUser, Role } from "./user.interface";
 import { User } from "./user.model";
 import bcrypt from 'bcryptjs';
 import { QueryBuilder } from "../../utils/QueryBuilder";
@@ -86,12 +86,36 @@ const updateUser = async (userId: string, payload: Partial<IUser>, decodedUser: 
         };
     };
 
-    if (payload.password) {
-        payload.password = await bcrypt.hash(payload.password as string, envVars.BCRYPT_SALT_ROUNDS);
-    };
-
     const newUpdatedUser = await User.findByIdAndUpdate(userId, payload, { new: true, runValidators: true });
     return newUpdatedUser;
+};
+
+const changePassword = async (userId: string, payload: IPassword, decodedUser: JwtPayload) => {
+    const isUserExist = await User.findById(userId);
+
+    if (!isUserExist) {
+        throw new AppError(404, 'User not found');
+    };
+
+    if (decodedUser.userId !== userId) {
+        throw new AppError(403, 'You are not permitted to change this password!');
+    };
+
+    if (payload.currentPassword) {
+        const bcryptedPassword = await bcrypt.compare(payload.currentPassword as string, isUserExist.password as string);
+
+        if (!bcryptedPassword) {
+            throw new AppError(400, "Password is incorrect");
+        };
+        payload.newPassword = await bcrypt.hash(payload.newPassword as string, Number(envVars.BCRYPT_SALT_ROUNDS));
+    };
+
+    const updatedPassword = {
+        password: payload.newPassword
+    }
+
+    await User.findByIdAndUpdate(userId, updatedPassword, { new: true, runValidators: true });
+    return;
 };
 
 const blockUnblockUser = async (id: string) => {
@@ -142,6 +166,7 @@ export const UserServices = {
     getMe,
     singleUser,
     updateUser,
+    changePassword,
     blockUnblockUser,
     approveOrSuspendAgent
 };

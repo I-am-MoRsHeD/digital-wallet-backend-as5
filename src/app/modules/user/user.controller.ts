@@ -67,6 +67,21 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
     });
 });
 
+const changePassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const payload = req.body;
+    const verifiedToken = req.user;
+
+    const result = await UserServices.changePassword(id, payload, verifiedToken as JwtPayload);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Password updated successfully",
+        data: result
+    });
+});
+
 const blockUnblockUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const result = await UserServices.blockUnblockUser(id);
@@ -98,6 +113,7 @@ export const UserControllers = {
     getMe,
     singleUser,
     updateUser,
+    changePassword,
     blockUnblockUser,
     approveOrSuspendAgent
 }

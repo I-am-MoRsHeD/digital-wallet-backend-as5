@@ -22,8 +22,8 @@ const getAllTransactions = catchAsync(async (req: Request, res: Response, next: 
 
 const getTransactionsForDecodedUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
-    const varifiedUser = req.user;
-    const result = await TransactionServices.getTransactionsForDecodedUser(query as Record<string, string>, varifiedUser as JwtPayload);
+    const verifiedUser = req.user;
+    const result = await TransactionServices.getTransactionsForDecodedUser(query as Record<string, string>, verifiedUser as JwtPayload);
 
     sendResponse<ITransaction[]>(res, {
         statusCode: 200,
@@ -36,8 +36,8 @@ const getTransactionsForDecodedUser = catchAsync(async (req: Request, res: Respo
 
 const getCashInTransactions = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
-    const varifiedUser = req.user;
-    const result = await TransactionServices.getCashInTransactions(query as Record<string, string>, varifiedUser as JwtPayload);
+    const verifiedUser = req.user;
+    const result = await TransactionServices.getCashInTransactions(query as Record<string, string>, verifiedUser as JwtPayload);
 
     sendResponse<ITransaction[]>(res, {
         statusCode: 200,
@@ -50,8 +50,8 @@ const getCashInTransactions = catchAsync(async (req: Request, res: Response, nex
 
 const getWithdrawTransactions = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
-    const varifiedUser = req.user;
-    const result = await TransactionServices.getWithdrawTransactions(query as Record<string, string>, varifiedUser as JwtPayload);
+    const verifiedUser = req.user;
+    const result = await TransactionServices.getWithdrawTransactions(query as Record<string, string>, verifiedUser as JwtPayload);
 
     sendResponse<ITransaction[]>(res, {
         statusCode: 200,
@@ -66,5 +66,5 @@ export const TransactionController = {
     getAllTransactions,
     getTransactionsForDecodedUser,
     getCashInTransactions,
-    getWithdrawTransactions
+    getWithdrawTransactions,
 };
