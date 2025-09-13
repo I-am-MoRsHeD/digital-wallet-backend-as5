@@ -149,7 +149,9 @@ const approveOrSuspendAgent = async (id: string) => {
         throw new AppError(400, 'Only regular agents can be suspended');
     };
 
-    if (agent.isApproved === isApproved.SUSPENDED) {
+    if (agent.isApproved === isApproved.PENDING) {
+        agent.isApproved = isApproved.APPROVED;
+    } else if (agent.isApproved === isApproved.SUSPENDED) {
         agent.isApproved = isApproved.APPROVED;
     } else {
         agent.isApproved = isApproved.SUSPENDED;
